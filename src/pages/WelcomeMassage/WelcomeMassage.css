@@ -1,10 +1,117 @@
+@keyframes rotateColors {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 * {
   padding: 0px;
   margin: 0px;
   box-sizing: border-box;
 }
-html,
-body {
+.container {
+  padding: 20px 100px;
+}
+.drag-content {
+  position: relative;
+  z-index: 10;
+}
+.drag2 {
+  border-radius: 50% 50% 46% 54% / 49% 48% 52% 51%;
+}
+.drag-content.visible {
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 0.5s ease, visibility 0s;
+  transform: rotate(240deg);
+}
+
+.drag h1 {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.drag {
+  position: absolute;
+  top: 0px;
+  left: 0px;
   width: 100%;
-  height: 100%;
+  height: 200px;
+  transform-origin: center;
+  box-shadow: -14px 5px 9px -4px rgba(0, 0, 0, 0.19);
+  z-index: 2;
+  transform: rotate(120deg);
+}
+
+.custom-shape {
+  pointer-events: none;
+  border-radius: 52% 48% 44% 56% / 49% 48% 52% 51%;
+  width: 550px;
+  height: 550px;
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  z-index: 1;
+}
+
+.custom-shape3 {
+  position: absolute;
+  width: 550px;
+  height: 550px;
+  background: conic-gradient(#8a2be2 50%, #ff00ff 50%);
+  animation: rotateColors 10s linear infinite;
+  filter: blur(50px);
+  border-radius: 50%;
+  opacity: 0;
+  transition: opacity 1s ease-in-out, transform 1s ease-in-out;
+  top: 20px;
+  left: 35%;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.8),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to bottom right,
+    rgba(200, 188, 188, 0.8),
+    transparent
+  );
+}
+
+.custom-shape3.hidden {
+  display: none;
+}
+
+.custom-shape::before {
+  content: "";
+  position: absolute;
+  inset: -20px;
+  background: conic-gradient(#89cbce 50%, #7581ff 50%);
+  animation: rotateColors 10s linear infinite;
+  filter: blur(50px);
+  -webkit-mask-image: linear-gradient(
+    to bottom right,
+    rgba(0, 0, 0, 0.8),
+    transparent
+  );
+  mask-image: linear-gradient(
+    to top center,
+    rgba(246, 243, 243, 0.8),
+    transparent
+  );
+}
+
+.drga2 {
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+  width: 100%;
+  height: 200px;
+  transform-origin: center;
+  box-shadow: 0 -5px 9px -4px rgba(0, 0, 0, 0.19);
+  z-index: 2;
 }
