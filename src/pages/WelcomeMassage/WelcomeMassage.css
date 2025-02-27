@@ -12,6 +12,41 @@
   margin: 0px;
   box-sizing: border-box;
 }
+.content {
+  position: relative;
+  z-index: 100;
+}
+.drga2 {
+  pointer-events: none;
+}
+.no-rotate {
+  transform: rotate(0deg);
+}
+.drag {
+  transform-origin: center;
+}
+/* WelcomeMassage.css */
+.drag {
+  position: relative;
+  transform-style: preserve-3d;
+}
+
+.content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(50%, -60%) rotate(240deg);
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+}
+
+.content.visible {
+  opacity: 1;
+  visibility: visible;
+}
 .container {
   padding: 20px 100px;
 }
