@@ -42,6 +42,7 @@ export default function home() {
       {weatherData && (
         <div className="bg-red-600 w-96 h-32 absolute z-40">
           <h1>{weatherData?.main?.feels_like}</h1>
+          <p>{weatherData?.main?.grnd_level}hPa</p>
         </div>
       )}
     </div>

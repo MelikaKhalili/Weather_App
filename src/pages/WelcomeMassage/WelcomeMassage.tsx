@@ -7,22 +7,25 @@ export default function WelcomeMassage() {
   const drag2Ref = useRef(null);
   const [rotateTriggered, setRotateTriggered] = useState(false);
   const [name, setName] = useState("");
-
+  const [x, setX] = useState(false);
   useEffect(() => {
     const drag2Element = drag2Ref.current;
     if (!drag2Element) return;
 
-    anime({
-      targets: ".drag",
-      translateY: [
-        { value: "-50vh", duration: 0 },
-        { value: "0", duration: 2000, easing: "easeOutQuad" },
-      ],
-      complete: () => {
-        const contentElement = document.querySelector(".content");
-        if (contentElement) contentElement.classList.add("visible");
-      },
-    });
+    if (!x) {
+      anime({
+        targets: ".drag",
+        translateY: [
+          { value: "-50vh", duration: 0 },
+          { value: "0", duration: 2000, easing: "easeOutQuad" },
+        ],
+        complete: () => {
+          const contentElement = document.querySelector(".content");
+          if (contentElement) contentElement.classList.add("visible");
+          setX(true);
+        },
+      });
+    }
 
     anime({
       targets: ".drga2",
