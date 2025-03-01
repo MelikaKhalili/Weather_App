@@ -1,6 +1,10 @@
 import "animate.css";
 import anime from "animejs/lib/anime.es.js";
 import { useEffect, useRef, useState } from "react";
+import { FaFacebookF, FaUserCircle } from "react-icons/fa";
+import { IoLockClosed } from "react-icons/io5";
+import { MdOutlineMail } from "react-icons/md";
+import { TypeAnimation } from "react-type-animation";
 import "./WelcomeMassage.css";
 
 export default function WelcomeMassage() {
@@ -72,7 +76,7 @@ export default function WelcomeMassage() {
                             opacity: 0,
                             duration: 800,
                             easing: "easeInOutQuad",
-                            delay: 3000,
+                            delay: 500,
                             complete: () => {
                               const dragElement =
                                 document.querySelector(".drag");
@@ -156,20 +160,50 @@ export default function WelcomeMassage() {
           <div className="custom-shape3 hidden"></div>
         </div>
         <div className="bg-slate-800 drag w-full h-[400px]">
-          <div className="content flex gap-6 flex-col justify-center items-center">
-            <input
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              type="text"
+          <div className="content   flex gap-8 flex-col justify-center items-center">
+            <TypeAnimation
+              className="text-white text-5xl font-bold "
+              sequence={["Sign", 1000, "Up", 1000, "Sign Up", 5000, "", 700]}
+              style={{ fontSize: "2em" }}
+              repeat={Infinity}
             />
-            <input type="text" />
-            <input type="text" />
-            <button
-              onClick={handleSubmitClick}
-              className="bg-blue-700 text-white py-2 px-6 rounded-full"
-            >
-              Submit
+            <div className="flex items-center bg-[#dce8f2] rounded-3xl px-8 py-3">
+              <FaUserCircle className="text-gray-700 text-xl mr-2" />
+              <input
+                type="text"
+                className=" bg-transparent focus:outline-none placeholder-gray-700"
+                placeholder="Please Enter Your Name"
+              />
+            </div>
+            <div className="flex items-center bg-[#dce8f2] rounded-3xl px-8 py-3">
+              <MdOutlineMail className="text-gray-700 text-xl mr-2" />
+              <input
+                type="email"
+                className="bg-transparent focus:outline-none placeholder-gray-700"
+                placeholder="Please Enter Your Email"
+              />
+            </div>
+            <div className="flex items-center bg-[#dce8f2] rounded-3xl px-8 py-3">
+              <IoLockClosed className="text-gray-700 text-xl mr-2" />
+              <input
+                type="password"
+                className="bg-transparent focus:outline-none placeholder-gray-700"
+                placeholder="Please Enter Your Password"
+              />
+            </div>
+            <button onClick={handleSubmitClick} className="btn-17">
+              <span className="text-container">
+                <span className="text">Sign Up</span>
+              </span>
             </button>
+            <p className="text-white">
+              You can register with your social platforms.
+            </p>
+            <div className="grid ">
+              <div className="border-2 border-white bg-white w-10 h-10 flex justify-center items-center rounded-full ">
+                <FaFacebookF className=" text-xl" />
+              </div>
+            </div>
           </div>
         </div>
         <div

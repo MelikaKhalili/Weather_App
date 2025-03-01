@@ -1,0 +1,12 @@
+* {
+  padding: 0px;
+  margin: 0px;
+  box-sizing: border-box;
+}
+@font-face {
+  font-family: Generalfont;
+  src: url(../../assets/Fonts/Montserrat-Regular.ttf);
+}
+.Layout {
+  font-family: Generalfont;
+}
