@@ -3,3 +3,189 @@
   margin: 0px;
   box-sizing: border-box;
 }
+.BackGroundHome {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100vw;
+  height: 100vh;
+  background-image: url("../../assets/svgs/BackGroundImage.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.weather-container {
+  width: 40%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(20px);
+  padding: 20px;
+  border-right: 2px solid white;
+  color: white;
+  text-align: left;
+}
+/* Animation Btn */
+/* From Uiverse.io by zjssun */
+.button {
+  position: relative;
+  padding: 5px 30px;
+  border-radius: 4px;
+  border: none;
+  color: white;
+  cursor: pointer;
+  background-color: #8d939f;
+  transition: all 0.2s ease;
+}
+
+.button:active {
+  transform: scale(0.96);
+}
+
+.button:before,
+.button:after {
+  position: absolute;
+  content: "";
+  width: 150%;
+  left: 50%;
+  height: 100%;
+  transform: translateX(-50%);
+  z-index: -1000;
+  background-repeat: no-repeat;
+}
+
+.button:hover:before {
+  top: -70%;
+  background-image: radial-gradient(circle, white 20%, transparent 20%),
+    radial-gradient(circle, transparent 20%, white 20%, transparent 30%),
+    radial-gradient(circle, white 20%, transparent 20%),
+    radial-gradient(circle, white 20%, transparent 20%),
+    radial-gradient(circle, transparent 10%, white 15%, transparent 20%),
+    radial-gradient(circle, white 20%, transparent 20%),
+    radial-gradient(circle, white 20%, transparent 20%),
+    radial-gradient(circle, white 20%, transparent 20%),
+    radial-gradient(circle, white 20%, transparent 20%);
+  background-size: 10% 10%, 20% 20%, 15% 15%, 20% 20%, 18% 18%, 10% 10%, 15% 15%,
+    10% 10%, 18% 18%;
+  background-position: 50% 120%;
+  animation: greentopBubbles 0.6s ease;
+}
+
+@keyframes greentopBubbles {
+  0% {
+    background-position: 5% 90%, 10% 90%, 10% 90%, 15% 90%, 25% 90%, 25% 90%,
+      40% 90%, 55% 90%, 70% 90%;
+  }
+
+  50% {
+    background-position: 0% 80%, 0% 20%, 10% 40%, 20% 0%, 30% 30%, 22% 50%,
+      50% 50%, 65% 20%, 90% 30%;
+  }
+
+  100% {
+    background-position: 0% 70%, 0% 10%, 10% 30%, 20% -10%, 30% 20%, 22% 40%,
+      50% 40%, 65% 10%, 90% 20%;
+    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+}
+
+.button:hover::after {
+  bottom: -70%;
+  background-image: radial-gradient(circle, white 20%, transparent 20%),
+    radial-gradient(circle, white 20%, transparent 20%),
+    radial-gradient(circle, transparent 10%, white 15%, transparent 20%),
+    radial-gradient(circle, white 20%, transparent 20%),
+    radial-gradient(circle, white 20%, transparent 20%),
+    radial-gradient(circle, white, transparent 20%),
+    radial-gradient(circle, white 20%, transparent 20%);
+  background-size: 15% 15%, 20% 20%, 18% 18%, 20% 20%, 15% 15%, 20% 20%, 18% 18%;
+  background-position: 50% 0%;
+  animation: greenbottomBubbles 0.6s ease;
+}
+
+@keyframes greenbottomBubbles {
+  0% {
+    background-position: 10% -10%, 30% 10%, 55% -10%, 70% -10%, 85% -10%,
+      70% -10%, 70% 0%;
+  }
+
+  50% {
+    background-position: 0% 80%, 20% 80%, 45% 60%, 60% 100%, 75% 70%, 95% 60%,
+      105% 0%;
+  }
+
+  100% {
+    background-position: 0% 90%, 20% 90%, 45% 70%, 60% 110%, 75% 80%, 95% 70%,
+      110% 10%;
+    background-size: 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%, 0% 0%;
+  }
+}
+/* Animation Btn/2 */
+.Btn {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: 45px;
+  height: 45px;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition-duration: 0.3s;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.199);
+  background-color: white;
+}
+
+.sign {
+  width: 100%;
+  transition-duration: 0.3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sign svg {
+  width: 17px;
+}
+
+.sign svg path {
+  fill: black;
+}
+.text {
+  position: absolute;
+  right: 0%;
+  width: 0%;
+  opacity: 0;
+  color: black;
+  font-size: 1.2em;
+  font-weight: 600;
+  transition-duration: 0.3s;
+}
+.Btn:hover {
+  width: 125px;
+  border-radius: 40px;
+  transition-duration: 0.3s;
+}
+
+.Btn:hover .sign {
+  width: 30%;
+  transition-duration: 0.3s;
+  padding-left: 20px;
+}
+.Btn:hover .text {
+  opacity: 1;
+  width: 70%;
+  transition-duration: 0.3s;
+  padding-right: 10px;
+}
+.Btn:active {
+  transform: translate(2px, 2px);
+}
+/* Font BackGround blur */
+@font-face {
+  font-family: "FuzzyBubbles-Bold";
+  src: url("../../assets/Fonts/FuzzyBubbles-Bold.ttf");
+}
+.BackGroundHome {
+  font-family: "FuzzyBubbles-Bold";
+}
