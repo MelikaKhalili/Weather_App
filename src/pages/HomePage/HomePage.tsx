@@ -1,4 +1,5 @@
 import GetgeographicDate from "@/services/getGeographicDate";
+import { GetLocationLive } from "@/services/getLocationLive";
 import { GetweatherData } from "@/services/getWeatherData";
 import { Input } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
@@ -57,7 +58,7 @@ export default function home() {
   const [timezoneInfo, setTimezoneInfo] = useState<any>(null);
   const [isData, setIsDta] = useState(false);
   const [showFavorite, setShowFavorite] = useState<any[]>([]);
-
+  const [locationusers, setLocationUsers] = useState<any>(null);
   const formatTime = (timestamp: number) => {
     const date = new Date(timestamp * 1000);
     const hours = date.getHours();
@@ -80,6 +81,7 @@ export default function home() {
         setWeatherData(weather);
       }
     }
+    setCityName("");
   };
 
   useEffect(() => {
@@ -92,6 +94,31 @@ export default function home() {
       });
     }
   }, [lat, lon]);
+  useEffect(() => {
+    GetLocationLive()
+      .then((res) => console.log(res.data))
+      .catch((error) => {
+        console.error("Error fetching location:", error);
+      });
+  }, []);
+  const handelLocationLiveUsers = () => {
+    GetLocationLive()
+      .then((res) => {
+        const { lat, lon } = res.data;
+        setLat(lat);
+        setLon(lon);
+        GetweatherData(lat, lon).then((weather) => {
+          setWeatherData(weather);
+          const timezoneOffset = weather.timezone;
+          const timeInfo = getTimeInfo(timezoneOffset);
+          setTimezoneInfo(timeInfo);
+        });
+        setLocationUsers(res.data);
+      })
+      .catch((error) => {
+        console.error("Error fetching location:", error);
+      });
+  };
   const handelFavorite = () => {
     if (
       weatherData &&
@@ -276,7 +303,10 @@ export default function home() {
         </div>
         <div className="text">Logout</div>
       </button>
-      <div className="bg-white/60 absolute bottom-10 left-[580px] w-[43px] h-[43px] rounded-full flex justify-center items-center">
+      <div
+        onClick={handelLocationLiveUsers}
+        className="cursor-pointer bg-white/60 absolute bottom-10 left-[620px] w-[43px] h-[43px] rounded-full flex justify-center items-center"
+      >
         <FaLocationCrosshairs className="text-3xl text-gray-900" />
       </div>
     </div>
