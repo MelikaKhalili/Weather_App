@@ -2,7 +2,11 @@ import GetgeographicDate from "@/services/getGeographicDate";
 import { GetweatherData } from "@/services/getWeatherData";
 import { Input } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { FaTemperatureArrowDown, FaTemperatureArrowUp } from "react-icons/fa6";
+import {
+  FaLocationCrosshairs,
+  FaTemperatureArrowDown,
+  FaTemperatureArrowUp,
+} from "react-icons/fa6";
 import { ImSearch } from "react-icons/im";
 import { useNavigate } from "react-router-dom";
 import Animation_WindSpeed from "../../assets/gifts/Animation_WindSpeed.gif";
@@ -51,6 +55,8 @@ export default function home() {
   const [lat, setLat] = useState<number | null>(null);
   const [lon, setLon] = useState<number | null>(null);
   const [timezoneInfo, setTimezoneInfo] = useState<any>(null);
+  const [isData, setIsDta] = useState(false);
+  const [showFavorite, setShowFavorite] = useState<any[]>([]);
 
   const formatTime = (timestamp: number) => {
     const date = new Date(timestamp * 1000);
@@ -63,6 +69,7 @@ export default function home() {
   };
 
   const handelSearch = async () => {
+    setIsDta(true);
     if (cityName.trim()) {
       const getGeographicDate = await GetgeographicDate(cityName);
       if (getGeographicDate && getGeographicDate.length > 0) {
@@ -85,7 +92,17 @@ export default function home() {
       });
     }
   }, [lat, lon]);
-
+  const handelFavorite = () => {
+    if (
+      weatherData &&
+      !showFavorite.some((item) => item.id === weatherData.id)
+    ) {
+      setShowFavorite([...showFavorite, weatherData]);
+    }
+  };
+  const handelDeleteFavorite = (id: number) => {
+    setShowFavorite(showFavorite.filter((item) => item.id !== id));
+  };
   return (
     <div className="BackGroundHome">
       <div className="weather-container">
@@ -198,13 +215,56 @@ export default function home() {
           </div>
         )}
       </div>
-      <div className="flex flex-col justify-center items-start absolute top-24 right-[35%]">
-        <h1 className="text-white text-6xl font-bold">
-          {weatherData?.weather?.[0]?.main}
-        </h1>
-        <p className="text-white">{weatherData?.weather?.[0]?.description}</p>
-        <img src={weatherData?.weather?.[0]?.icon} alt="" />
-      </div>
+      {isData && (
+        <div
+          className="flex gap-8 flex-col justify-center items-start absolute top-48
+        right-[35%]"
+        >
+          <div className="flex flex-col gap-2">
+            <h1 className="text-white text-6xl font-bold">
+              {weatherData?.weather?.[0]?.main}
+            </h1>
+            <p className="text-white text-xl">
+              {weatherData?.weather?.[0]?.description}
+            </p>
+            <img
+              className="w-16"
+              src={`https://openweathermap.org/img/wn/${weatherData?.weather?.[0]?.icon}@2x.png`}
+              alt={weatherData?.weather?.[0]?.description}
+            />
+          </div>
+
+          <div className="flex gap-6">
+            <button className="btn-1">See Details</button>
+            <button onClick={handelFavorite} className="btn-2">
+              Add To Favorite
+            </button>
+          </div>
+        </div>
+      )}
+      {showFavorite && (
+        <div className="absolute top-1/4 right-8">
+          {showFavorite.map((item) => (
+            <div className="bg-slate-950 backdrop-blur-2xl px-8 rounded-xl mb-8">
+              <div
+                key={item.id}
+                className="flex gap-2  text-white justify-center items-center"
+              >
+                <span>{item.name}</span>
+                <span>{(item.main.temp - 273.15).toFixed(2)}°</span>
+                <img
+                  className="w-12"
+                  src={`https://openweathermap.org/img/wn/${item.weather[0].icon}@2x.png`}
+                  alt="Icon_Weather"
+                />
+                <button onClick={() => handelDeleteFavorite(item.id)}>
+                  ❌
+                </button>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
       <button
         onClick={handelBackLoginpage}
         className="Btn absolute top-6 right-8"
@@ -216,6 +276,9 @@ export default function home() {
         </div>
         <div className="text">Logout</div>
       </button>
+      <div className="bg-white/60 absolute bottom-10 left-[580px] w-[43px] h-[43px] rounded-full flex justify-center items-center">
+        <FaLocationCrosshairs className="text-3xl text-gray-900" />
+      </div>
     </div>
   );
 }
