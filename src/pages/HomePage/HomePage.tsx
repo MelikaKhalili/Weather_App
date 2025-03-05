@@ -1,3 +1,4 @@
+import GetForecast from "@/services/getForecast";
 import GetgeographicDate from "@/services/getGeographicDate";
 import { GetLocationLive } from "@/services/getLocationLive";
 import { GetweatherData } from "@/services/getWeatherData";
@@ -15,7 +16,6 @@ import Humodity from "../../assets/images/Humodity.png";
 import sunset from "../../assets/images/sunest.png";
 import sunrise from "../../assets/images/sunrise.png";
 import "./HomePage.css";
-
 function getTimeInfo(offsetInSeconds: number) {
   const offsetInMinutes = offsetInSeconds / 60;
   const offsetInHours = offsetInMinutes / 60;
@@ -59,6 +59,14 @@ export default function home() {
   const [isData, setIsDta] = useState(false);
   const [showFavorite, setShowFavorite] = useState<any[]>([]);
   const [locationusers, setLocationUsers] = useState<any>(null);
+  const [isLocationButtonDisabled, setIsLocationButtonDisabled] =
+    useState(false);
+  const [forecast, setForecast] = useState<any>(null);
+  const [showDetails, setShowDetails] = useState<boolean>(false);
+  const [closeModal, setCloseModal] = useState(false);
+  const handelCloseModal = () => {
+    setCloseModal(true);
+  };
   const formatTime = (timestamp: number) => {
     const date = new Date(timestamp * 1000);
     const hours = date.getHours();
@@ -83,7 +91,6 @@ export default function home() {
     }
     setCityName("");
   };
-
   useEffect(() => {
     if (lat && lon) {
       GetweatherData(lat, lon).then((weather) => {
@@ -102,6 +109,7 @@ export default function home() {
       });
   }, []);
   const handelLocationLiveUsers = () => {
+    if (isLocationButtonDisabled) return;
     GetLocationLive()
       .then((res) => {
         const { lat, lon } = res.data;
@@ -118,6 +126,7 @@ export default function home() {
       .catch((error) => {
         console.error("Error fetching location:", error);
       });
+    setIsLocationButtonDisabled(true);
   };
   const handelFavorite = () => {
     if (
@@ -130,6 +139,29 @@ export default function home() {
   const handelDeleteFavorite = (id: number) => {
     setShowFavorite(showFavorite.filter((item) => item.id !== id));
   };
+  useEffect(() => {
+    const fetchForcest = async () => {
+      if (lat && lon) {
+        try {
+          const response = await GetForecast(lat, lon);
+          console.log(response.data);
+          setForecast(response.data);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    };
+    fetchForcest();
+  }, [lat, lon]);
+  const handelShowMoreDetails = () => {
+    if (forecast) {
+      setShowDetails(true);
+    } else {
+      console.log("There is no prediction");
+    }
+    setCloseModal(false);
+  };
+  console.log(forecast);
   return (
     <div className="BackGroundHome">
       <div className="weather-container">
@@ -262,7 +294,9 @@ export default function home() {
           </div>
 
           <div className="flex gap-6">
-            <button className="btn-1">See Details</button>
+            <button onClick={handelShowMoreDetails} className="btn-1">
+              Predictions
+            </button>
             <button onClick={handelFavorite} className="btn-2">
               Add To Favorite
             </button>
@@ -303,12 +337,54 @@ export default function home() {
         </div>
         <div className="text">Logout</div>
       </button>
-      <div
+      <button
         onClick={handelLocationLiveUsers}
-        className="cursor-pointer bg-white/60 absolute bottom-10 left-[620px] w-[43px] h-[43px] rounded-full flex justify-center items-center"
+        className={`cursor-pointer bg-white/60 absolute bottom-10 left-[620px]   rounded-[20px] flex justify-center items-center gap-4 py-1 px-2 ${
+          isLocationButtonDisabled ? " opacity-25 cursor-not-allowed" : ""
+        }`}
       >
+        <span> Current Location</span>
         <FaLocationCrosshairs className="text-3xl text-gray-900" />
-      </div>
+      </button>
+      {showDetails && forecast && !closeModal && (
+        <div
+          onClick={handelCloseModal}
+          className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-md"
+        >
+          <div className="bg-white/45 backdrop-blur-md shadow-lg w-[600px]  rounded-xl border-solid border-4 border-white/100 ">
+            {forecast.list.slice(0, 5).map((item: any, index: any) => {
+              const icon = item?.weather?.[0]?.icon;
+              const data = new Date(item.dt * 1000);
+              const day = data.toLocaleDateString("en-US", {
+                weekday: "long",
+              });
+              const Month = data.toLocaleDateString("en-US", {
+                month: "long",
+              });
+              return (
+                <div key={index}>
+                  <div className="grid grid-cols-3 justify-center items-center">
+                    <div className="flex justify-center items-center">
+                      <img
+                        src={`http://openweathermap.org/img/wn/${icon}.png`}
+                        alt=""
+                      />
+                      <p>{item.main.temp.toFixed(1)}°</p>
+                    </div>
+                    <div>
+                      <p>{day}</p>
+                    </div>
+                    <div>
+                      <p>{Month}</p>
+                    </div>
+                  </div>
+                  <hr />
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
