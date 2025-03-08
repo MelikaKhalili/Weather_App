@@ -3,6 +3,7 @@ import GetgeographicDate from "@/services/getGeographicDate";
 import { GetLocationLive } from "@/services/getLocationLive";
 import { GetweatherData } from "@/services/getWeatherData";
 import { Input } from "@chakra-ui/react";
+import moment from "moment";
 import { useEffect, useState } from "react";
 import {
   FaLocationCrosshairs,
@@ -13,6 +14,7 @@ import { ImSearch } from "react-icons/im";
 import { useNavigate } from "react-router-dom";
 import Animation_WindSpeed from "../../assets/gifts/Animation_WindSpeed.gif";
 import Humodity from "../../assets/images/Humodity.png";
+import speedDirections from "../../assets/images/speedDirections.png";
 import sunset from "../../assets/images/sunest.png";
 import sunrise from "../../assets/images/sunrise.png";
 import "./HomePage.css";
@@ -64,6 +66,7 @@ export default function home() {
   const [forecast, setForecast] = useState<any>(null);
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const [closeModal, setCloseModal] = useState(false);
+  const [openModalHourlyforecast, setOpenModalHourlyforecast] = useState(false);
   const handelCloseModal = () => {
     setCloseModal(true);
   };
@@ -160,6 +163,10 @@ export default function home() {
       console.log("There is no prediction");
     }
     setCloseModal(false);
+  };
+  const handelHourlyforecast = () => {
+    setOpenModalHourlyforecast(true);
+    console.log("Hello Melika");
   };
   console.log(forecast);
   return (
@@ -277,7 +284,7 @@ export default function home() {
       {isData && (
         <div
           className="flex gap-8 flex-col justify-center items-start absolute top-48
-        right-[35%]"
+        right-[32%]"
         >
           <div className="flex flex-col gap-2">
             <h1 className="text-white text-6xl font-bold">
@@ -293,12 +300,20 @@ export default function home() {
             />
           </div>
 
-          <div className="flex gap-6">
-            <button onClick={handelShowMoreDetails} className="btn-1">
-              Predictions
-            </button>
-            <button onClick={handelFavorite} className="btn-2">
-              Add To Favorite
+          <div className="grid grid-cols-1 gap-6">
+            <div className="grid grid-cols-2 gap-6">
+              <button onClick={handelShowMoreDetails} className="btn-1">
+                Predictions
+              </button>
+              <button onClick={handelFavorite} className="btn-2">
+                Add To Favorite
+              </button>
+            </div>
+            <button
+              onClick={handelHourlyforecast}
+              className="btn-3 justify-self-center"
+            >
+              Forecast for the next 3 days
             </button>
           </div>
         </div>
@@ -382,6 +397,61 @@ export default function home() {
                 </div>
               );
             })}
+          </div>
+        </div>
+      )}
+      {openModalHourlyforecast && (
+        <div
+          onClick={() => setOpenModalHourlyforecast(false)}
+          className="fixed inset-0 flex items-center justify-center bg-black/30 backdrop-blur-md "
+        >
+          <div className="bg-white/45 backdrop-blur-md shadow-lg w-[95%] rounded-xl border-solid border-4 border-white/100 ">
+            <div className="p-6">
+              <div className="weather-grid">
+                {forecast.list.slice(0, 8).map((item: any, index: any) => {
+                  const icon = item?.weather?.[0]?.icon;
+                  const deg = item?.wind?.deg;
+                  const dt_text = item?.dt_txt;
+                  const temp = item?.main?.temp;
+                  console.log(temp);
+                  console.log(dt_text);
+                  const data = moment(dt_text, "YYYY-MM-DD HH:mm:ss");
+                  console.log(data);
+                  data.minutes(Math.floor(data.minutes() / 3) * 3);
+                  const formattedTime = data.format("h:mm A"); //=>Am/Pm
+                  console.log(formattedTime);
+                  return (
+                    <div key={index} className="flex flex-col gap-10">
+                      <div className="icon-item bg-slate-500   rounded-xl shadow-md flex justify-center items-center flex-col px-6 py-4">
+                        <img
+                          src={`http://openweathermap.org/img/wn/${icon}.png`}
+                          alt="Icon_weatherData"
+                          className="w-16 h-16"
+                        />
+                        <p>{formattedTime}</p>
+                        <p>{temp.toFixed(1)}°</p>
+                      </div>
+                      <div className="direction-item bg-slate-500  rounded-xl shadow-xl px-6 py-4">
+                        <p>{formattedTime}</p>
+                        <div
+                          style={{
+                            transform: `rotate(${deg}deg)`,
+                            transition: "transform 0.3s ease",
+                          }}
+                        >
+                          <img
+                            className="w-8 h-8"
+                            src={speedDirections}
+                            alt="Wind Direction"
+                          />
+                        </div>
+                        <p>{temp.toFixed(1)}°</p>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
         </div>
       )}

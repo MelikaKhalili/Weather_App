@@ -191,7 +191,8 @@
 }
 /* Animation Button */
 .btn-1,
-.btn-2 {
+.btn-2,
+.btn-3 {
   cursor: pointer;
   padding: 5px 10px;
   border-radius: 25px;
@@ -203,8 +204,28 @@
   transition: all 0.5s;
 }
 .btn-1:hover,
-.btn-2:hover {
+.btn-2:hover,
+.btn-3:hover {
   background: linear-gradient(135deg, #87ceeb, #5a91c5);
   box-shadow: 0px 0px 15px #87ceeb;
   transform: scale(1.05);
+}
+.weather-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr); /* هشت ستون با عرض مساوی */
+  grid-template-rows: auto auto; /* دو ردیف با ارتفاع خودکار */
+  gap: 16px;
+  justify-items: center;
+}
+
+.icon-item {
+  grid-row: 1; /* قرار دادن در ردیف اول */
+}
+
+.direction-item {
+  grid-row: 2; /* قرار دادن در ردیف دوم */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
 }
