@@ -24,7 +24,6 @@ import Paez from "../../assets/Temperaturephotos/Paez.jpg";
 import Tabestan from "../../assets/Temperaturephotos/Tabestan.jpg";
 import Zemestan from "../../assets/Temperaturephotos/Zemestan.svg";
 import "../../i18n/i18n";
-import i18n from "../../i18n/i18n";
 import "./HomePage.css";
 function getTimeInfo(offsetInSeconds: number) {
   const offsetInMinutes = offsetInSeconds / 60;
@@ -76,6 +75,7 @@ export default function home() {
   const [closeModal, setCloseModal] = useState(false);
   const [openModalHourlyforecast, setOpenModalHourlyforecast] = useState(false);
   const [BackGroundImage, setBackGroundImage] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(false);
   const getBackGroundImage = (temp: number) => {
     if (temp > 15) {
       return Tabestan;
@@ -108,6 +108,7 @@ export default function home() {
 
   const handelSearch = async () => {
     setIsDta(true);
+    setIsLoading(true);
     if (cityName.trim()) {
       const getGeographicDate = await GetgeographicDate(cityName);
       if (getGeographicDate && getGeographicDate.length > 0) {
@@ -119,6 +120,7 @@ export default function home() {
       }
     }
     setCityName("");
+    setIsLoading(false);
   };
   useEffect(() => {
     if (lat && lon) {
@@ -195,7 +197,7 @@ export default function home() {
     console.log("Hello Melika");
   };
   console.log(forecast);
-  const { t, i18 } = useTranslation();
+  const { t, i18n } = useTranslation();
   const toggleLanguage = () => {
     const currentLang = i18n.language;
     i18n.changeLanguage(currentLang === "fa" ? "en" : "fa");
@@ -209,6 +211,12 @@ export default function home() {
         borderRight: "10px solid white",
       }}
     >
+      {isLoading && (
+        <div className="relative z-[999] w-full h-screen bg-white/50 backdrop-blur-lg rounded-xl shadow-xl flex justify-center items-center">
+          <div className="loader"></div>
+        </div>
+      )}
+
       <div className="weather-container">
         <div className="flex justify-center items-center gap-6">
           <Input
