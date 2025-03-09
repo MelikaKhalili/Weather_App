@@ -18,6 +18,11 @@ import Humodity from "../../assets/images/Humodity.png";
 import speedDirections from "../../assets/images/speedDirections.png";
 import sunset from "../../assets/images/sunest.png";
 import sunrise from "../../assets/images/sunrise.png";
+import Bahar from "../../assets/Temperaturephotos/Bahar.jpg";
+import Norm from "../../assets/Temperaturephotos/Norm.jpg";
+import Paez from "../../assets/Temperaturephotos/Paez.jpg";
+import Tabestan from "../../assets/Temperaturephotos/Tabestan.jpg";
+import Zemestan from "../../assets/Temperaturephotos/Zemestan.svg";
 import "../../i18n/i18n";
 import i18n from "../../i18n/i18n";
 import "./HomePage.css";
@@ -70,6 +75,24 @@ export default function home() {
   const [showDetails, setShowDetails] = useState<boolean>(false);
   const [closeModal, setCloseModal] = useState(false);
   const [openModalHourlyforecast, setOpenModalHourlyforecast] = useState(false);
+  const [BackGroundImage, setBackGroundImage] = useState<string>("");
+  const getBackGroundImage = (temp: number) => {
+    if (temp > 15) {
+      return Tabestan;
+    } else if (temp <= 30 && temp > 20) {
+      return Bahar;
+    } else if (temp <= 20 && temp > 10) {
+      return Paez;
+    } else if (temp <= 10 && temp > 0) {
+      return Zemestan;
+    } else {
+      return Norm;
+    }
+  };
+  useEffect(() => {
+    const temp = weatherData?.main?.temp - 273.15;
+    setBackGroundImage(getBackGroundImage(temp));
+  }, [weatherData]); //==>یعنی خب هر موقع اطلاعات اب و هوایی تغییر کرد بک گراند عوض بشه
   const handelCloseModal = () => {
     setCloseModal(true);
   };
@@ -179,7 +202,13 @@ export default function home() {
   };
 
   return (
-    <div className="BackGroundHome">
+    <div
+      className="BackGroundHome"
+      style={{
+        backgroundImage: `url(${BackGroundImage})`,
+        borderRight: "10px solid white",
+      }}
+    >
       <div className="weather-container">
         <div className="flex justify-center items-center gap-6">
           <Input
@@ -372,7 +401,7 @@ export default function home() {
       </button>
       <div className="absolute top-24 right-6">
         <button
-          className="bg-gray-500 border-1 border-gray-600 text-white rounded-full w-14 h-14 font-sans text-[12px]"
+          className="bg-white/60  rounded-full w-14 h-14 font-bold text-[12px]"
           onClick={toggleLanguage}
         >
           {i18n.language === "fa" ? "Change Englisch" : "تغییر به فارسی"}
