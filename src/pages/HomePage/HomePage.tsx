@@ -5,6 +5,7 @@ import { GetweatherData } from "@/services/getWeatherData";
 import { Input } from "@chakra-ui/react";
 import moment from "moment";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import {
   FaLocationCrosshairs,
   FaTemperatureArrowDown,
@@ -17,6 +18,8 @@ import Humodity from "../../assets/images/Humodity.png";
 import speedDirections from "../../assets/images/speedDirections.png";
 import sunset from "../../assets/images/sunest.png";
 import sunrise from "../../assets/images/sunrise.png";
+import "../../i18n/i18n";
+import i18n from "../../i18n/i18n";
 import "./HomePage.css";
 function getTimeInfo(offsetInSeconds: number) {
   const offsetInMinutes = offsetInSeconds / 60;
@@ -169,6 +172,12 @@ export default function home() {
     console.log("Hello Melika");
   };
   console.log(forecast);
+  const { t, i18 } = useTranslation();
+  const toggleLanguage = () => {
+    const currentLang = i18n.language;
+    i18n.changeLanguage(currentLang === "fa" ? "en" : "fa");
+  };
+
   return (
     <div className="BackGroundHome">
       <div className="weather-container">
@@ -284,7 +293,7 @@ export default function home() {
       {isData && (
         <div
           className="flex gap-8 flex-col justify-center items-start absolute top-48
-        right-[32%]"
+        right-[30%]"
         >
           <div className="flex flex-col gap-2">
             <h1 className="text-white text-6xl font-bold">
@@ -303,17 +312,17 @@ export default function home() {
           <div className="grid grid-cols-1 gap-6">
             <div className="grid grid-cols-2 gap-6">
               <button onClick={handelShowMoreDetails} className="btn-1">
-                Predictions
+                {t("Buttontextone")}
               </button>
               <button onClick={handelFavorite} className="btn-2">
-                Add To Favorite
+                {t("ButtontextTwo")}
               </button>
             </div>
             <button
               onClick={handelHourlyforecast}
               className="btn-3 justify-self-center"
             >
-              Forecast for the next 3 days
+              {t("Buttontextthree")}
             </button>
           </div>
         </div>
@@ -361,6 +370,14 @@ export default function home() {
         <span> Current Location</span>
         <FaLocationCrosshairs className="text-3xl text-gray-900" />
       </button>
+      <div className="absolute top-24 right-6">
+        <button
+          className="bg-gray-500 border-1 border-gray-600 text-white rounded-full w-14 h-14 font-sans text-[12px]"
+          onClick={toggleLanguage}
+        >
+          {i18n.language === "fa" ? "Change Englisch" : "تغییر به فارسی"}
+        </button>
+      </div>
       {showDetails && forecast && !closeModal && (
         <div
           onClick={handelCloseModal}
