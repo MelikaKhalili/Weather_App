@@ -54,7 +54,6 @@ function getTimeInfo(offsetInSeconds: number) {
     localTime: localTime.toLocaleTimeString(),
   };
 }
-
 export default function home() {
   const navigate = useNavigate();
   const handelBackLoginpage = () => {
@@ -105,7 +104,6 @@ export default function home() {
       .toString()
       .padStart(2, "0")}`;
   };
-
   const handelSearch = async () => {
     setIsDta(true);
     setIsLoading(true);
