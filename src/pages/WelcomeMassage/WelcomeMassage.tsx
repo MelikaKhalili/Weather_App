@@ -4,7 +4,6 @@ import axios from "axios";
 import { useEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { FaFacebookF, FaGoogle, FaTwitter, FaUserCircle } from "react-icons/fa";
-import { GrSun } from "react-icons/gr";
 import { IoLockClosed } from "react-icons/io5";
 import { MdOutlineMail } from "react-icons/md";
 import { TbBrandGithubFilled } from "react-icons/tb";
@@ -277,14 +276,14 @@ export default function WelcomeMassage() {
         style={{ backgroundColor: bgColor }}
         className="z-1 translate-x-[6%] translate-y-[6%] px-8  w-[90%] h-[600px] rounded-[30px] BackGround relative z-40 overflow-hidden"
       >
-        <div className="absolute right-8 top-8 z-[999999999999999999999999999999999999]">
+        {/* <div className="absolute right-8 top-8 z-[999999999999999999999999999999999999]">
           <div
             onClick={toggleBackground}
             className="bg-slate-300 w-[43px] h-[43px] rounded-full flex justify-center items-center"
           >
             <GrSun className="text-2xl text-white" />
           </div>
-        </div>
+        </div> */}
         <div className="container relative">
           <div className="custom-shape"></div>
           <div
